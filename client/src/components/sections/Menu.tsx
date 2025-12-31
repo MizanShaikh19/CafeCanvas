@@ -34,14 +34,14 @@ export default function Menu() {
         <Tabs defaultValue="coffee" className="w-full max-w-4xl mx-auto">
           <div className="flex justify-center mb-12">
             <TabsList className="bg-transparent gap-8">
-              <TabsTrigger 
-                value="coffee" 
+              <TabsTrigger
+                value="coffee"
                 className="text-lg bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-2"
               >
                 Coffee & Drinks
               </TabsTrigger>
-              <TabsTrigger 
-                value="food" 
+              <TabsTrigger
+                value="food"
                 className="text-lg bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-2"
               >
                 Food & Bakery
@@ -50,19 +50,31 @@ export default function Menu() {
           </div>
 
           <TabsContent value="coffee">
-            <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid md:grid-cols-2 gap-6"
+            >
               {MENU_ITEMS.coffee.map((item, index) => (
-                <MenuItem key={index} item={item} index={index} />
+                <MenuItem key={index} item={item} />
               ))}
-            </div>
+            </motion.div>
           </TabsContent>
-          
+
           <TabsContent value="food">
-            <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="grid md:grid-cols-2 gap-6"
+            >
               {MENU_ITEMS.food.map((item, index) => (
-                <MenuItem key={index} item={item} index={index} />
+                <MenuItem key={index} item={item} />
               ))}
-            </div>
+            </motion.div>
           </TabsContent>
         </Tabs>
       </div>
@@ -70,28 +82,44 @@ export default function Menu() {
   );
 }
 
-function MenuItem({ item, index }: { item: any, index: number }) {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
+function MenuItem({ item }: { item: any }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-    >
-      <Card className="border-none shadow-none bg-white/50 hover:bg-white transition-colors duration-300 overflow-hidden">
-        <CardContent className="p-4 flex gap-4 items-center">
-          <div className="w-20 h-20 rounded-md overflow-hidden shrink-0 bg-muted">
-            <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
-          </div>
-          <div className="flex-1">
-            <div className="flex justify-between items-baseline mb-1">
-              <h4 className="text-xl font-serif font-medium text-foreground">{item.name}</h4>
-              <span className="text-primary font-bold">{item.price}</span>
+    <motion.div variants={itemVariants}>
+      <motion.div whileHover={{ y: -5 }} transition={{ duration: 0.2 }}>
+        <Card className="border-none shadow-none bg-white/50 hover:bg-white hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group">
+          <CardContent className="p-4 flex gap-4 items-center">
+            <div className="w-20 h-20 rounded-md overflow-hidden shrink-0 bg-muted relative">
+              <img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
             </div>
-            <p className="text-sm text-muted-foreground">{item.desc}</p>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex-1">
+              <div className="flex justify-between items-baseline mb-1">
+                <h4 className="text-xl font-serif font-medium text-foreground group-hover:text-primary transition-colors">{item.name}</h4>
+                <span className="text-primary font-bold">{item.price}</span>
+              </div>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
     </motion.div>
   )
 }

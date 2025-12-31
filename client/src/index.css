@@ -4,43 +4,92 @@
 @theme inline {
   --color-background: hsl(30 20% 98%);
   --color-foreground: hsl(30 10% 20%);
-  
+
   --color-primary: hsl(28 67% 45%);
   --color-primary-foreground: hsl(30 20% 98%);
-  
+
   --color-secondary: hsl(30 15% 90%);
   --color-secondary-foreground: hsl(30 10% 20%);
-  
+
   --color-accent: hsl(28 67% 45%);
   --color-accent-foreground: hsl(30 20% 98%);
-  
+
   --color-muted: hsl(30 10% 94%);
   --color-muted-foreground: hsl(30 5% 45%);
-  
+
   --color-card: hsl(0 0% 100%);
   --color-card-foreground: hsl(30 10% 20%);
-  
+
   --color-border: hsl(30 10% 90%);
   --color-input: hsl(30 10% 90%);
   --color-ring: hsl(28 67% 45%);
-  
+
   --font-sans: 'DM Sans', sans-serif;
   --font-serif: 'Playfair Display', serif;
-  
+
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+}
+
+/* Dark Mode Colors */
+[data-theme="dark"] {
+  --color-background: 30 15% 12%;
+  --color-foreground: 30 10% 95%;
+
+  --color-primary: 28 67% 55%;
+  --color-primary-foreground: 30 10% 10%;
+
+  --color-secondary: 30 10% 20%;
+  --color-secondary-foreground: 30 10% 95%;
+
+  --color-accent: 28 67% 55%;
+  --color-accent-foreground: 30 10% 10%;
+
+  --color-muted: 30 10% 18%;
+  --color-muted-foreground: 30 5% 65%;
+
+  --color-card: 30 12% 15%;
+  --color-card-foreground: 30 10% 95%;
+
+  --color-border: 30 10% 25%;
+  --color-input: 30 10% 25%;
+  --color-ring: 28 67% 55%;
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
+  }
+}
+
+@utility hover-elevate {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsl(28 67% 45% / 0.2);
+  }
+}
+
+@utility active-elevate-2 {
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
   }
 }
 
@@ -48,13 +97,16 @@
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: hsl(30 20% 98%);
 }
+
 ::-webkit-scrollbar-thumb {
   background: hsl(30 10% 80%);
   border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(28 67% 45%);
 }

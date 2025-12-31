@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import aboutImage from "@assets/stock_images/barista_pouring_coff_d0b8bd01.jpg";
 
 export default function About() {
@@ -7,7 +8,7 @@ export default function About() {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Image */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -15,9 +16,9 @@ export default function About() {
             className="relative"
           >
             <div className="aspect-[4/5] rounded-lg overflow-hidden">
-              <img 
-                src={aboutImage} 
-                alt="Barista pouring coffee" 
+              <img
+                src={aboutImage}
+                alt="Barista pouring coffee"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
@@ -26,7 +27,7 @@ export default function About() {
           </motion.div>
 
           {/* Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -43,15 +44,25 @@ export default function About() {
             <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
               We serve ethically sourced beans, roasted in small batches to preserve their unique flavors. Whether you're here for a quick espresso, a leisurely brunch, or to get some work done, our space is designed to be your home away from home.
             </p>
-            
+
             <div className="flex gap-8">
               <div>
-                <h4 className="font-serif text-3xl font-bold text-primary">15+</h4>
+                <h4 className="font-serif text-3xl font-bold text-primary">
+                  <AnimatedCounter end={15} suffix="+" />
+                </h4>
                 <p className="text-sm text-muted-foreground mt-1">Coffee Varieties</p>
               </div>
               <div>
-                <h4 className="font-serif text-3xl font-bold text-primary">100%</h4>
+                <h4 className="font-serif text-3xl font-bold text-primary">
+                  <AnimatedCounter end={100} suffix="%" />
+                </h4>
                 <p className="text-sm text-muted-foreground mt-1">Organic Milk</p>
+              </div>
+              <div>
+                <h4 className="font-serif text-3xl font-bold text-primary">
+                  <AnimatedCounter end={10000} suffix="+" />
+                </h4>
+                <p className="text-sm text-muted-foreground mt-1">Happy Customers</p>
               </div>
             </div>
           </motion.div>

@@ -5,6 +5,7 @@ import Menu from "@/components/sections/Menu";
 import Gallery from "@/components/sections/Gallery";
 import Location from "@/components/sections/Location";
 import InstagramFeed from "@/components/sections/Instagram";
+import Testimonials from "@/components/sections/Testimonials";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <About />
       <Menu />
+      <Testimonials />
       <Gallery />
       <Location />
       <InstagramFeed />

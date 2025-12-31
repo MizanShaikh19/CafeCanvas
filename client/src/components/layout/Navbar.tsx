@@ -1,20 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-scroll";
 import { Menu, X, Coffee } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setScrolled(latest > 50);
+  });
 
   const navLinks = [
     { name: "About", to: "about" },
@@ -24,10 +30,16 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
+    <motion.nav
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-100%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
       className={cn(
-        "fixed w-full z-50 transition-all duration-300",
-        scrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
+        "fixed w-full z-50 transition-colors duration-300",
+        scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"
       )}
     >
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -54,7 +66,8 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <Button 
+          <ThemeToggle />
+          <Button
             className={cn(
               "font-serif",
               !scrolled && "bg-white text-black hover:bg-white/90 border-transparent"
@@ -74,25 +87,35 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-8 flex flex-col items-center gap-6 animate-in slide-in-from-top-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.to}
-              smooth={true}
-              offset={-80}
-              onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-foreground/80 hover:text-primary"
-            >
-              {link.name}
-            </Link>
-          ))}
-          <Button onClick={() => window.open("https://wa.me/1234567890", "_blank")}>
-            Book a Table
-          </Button>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg overflow-hidden"
+          >
+            <div className="flex flex-col items-center gap-6 py-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  smooth={true}
+                  offset={-80}
+                  onClick={() => setIsOpen(false)}
+                  className="text-lg font-medium text-foreground/80 hover:text-primary"
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <ThemeToggle />
+              <Button onClick={() => window.open("https://wa.me/1234567890", "_blank")}>
+                Book a Table
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
